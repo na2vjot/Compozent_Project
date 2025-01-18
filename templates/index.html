@@ -3,58 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Air Quality Prediction</title>
+    <title>AirVisor: Predicting AQI and Recommending Smarter Actions</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet"> <!-- Google Font -->
+    <style>
+        body {
+            background: linear-gradient(to right, #00c6ff, #0072ff); /* Smooth gradient background */
+            color: #ffffff;
+            font-family: 'Roboto', sans-serif; /* Updated font style */
+            position: relative;
+            overflow: hidden;
+            min-height: 100vh;
+        }
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4); /* Dark overlay for better text visibility */
+        }
+        .container {
+            position: relative;
+            margin-top: 100px;
+            background-color: rgba(0, 0, 0, 0.8); /* Dark background for contrast */
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        .container:hover {
+            transform: scale(1.02);
+        }
+        .container h1 {
+            font-size: 36px; /* Increased font size */
+            margin-bottom: 30px;
+            color: #ffcc00;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+        }
+        .btn-dashboard {
+            background-color: #ff9800;
+            border: none;
+            padding: 12px 25px; /* Adjusted padding for larger buttons */
+            font-size: 22px; /* Increased font size */
+            border-radius: 30px;
+            margin: 15px;
+            transition: background-color 0.3s ease-in-out, transform 0.2s, box-shadow 0.3s ease;
+            width: auto; /* Set width to auto for smaller buttons */
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-dashboard:hover {
+            background-color: #e67e22;
+            transform: translateY(-3px);
+            box-shadow: 0 0 25px rgba(255, 152, 0, 0.8); /* Glow effect */
+        }
+        .btn-container {
+            margin-top: 40px;
+        }
+        .fa-btn {
+            font-size: 28px;
+            margin-right: 10px;
+        }
+        .current-weather {
+            margin-top: 30px;
+            font-size: 24px;
+        }
+        .weather-details {
+            font-size: 18px;
+            margin-top: 10px;
+        }
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px;
+            }
+            .btn-dashboard {
+                padding: 10px 20px; /* Adjusted padding for smaller screens */
+                font-size: 18px; /* Adjusted font size for smaller screens */
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>Predict Air Quality Index (AQI)</h1>
-    <form method="POST" action="/predict">
+    <div class="overlay"></div> <!-- Overlay for better text visibility -->
+    <div class="container">
+        <h1>AirVisor: Predicting AQI and Recommending Smarter Actions</h1>
+        
+        <!-- Current Weather Info -->
+        <div class="current-weather">
+            <p><strong>Current Weather in Mumbai</strong></p>
+            <p><i class="fas fa-temperature-high"></i> Temperature: <span id="temperature">28°C</span></p>
+            <p><i class="fas fa-smog"></i> AQI: <span id="aqi">102 (Moderate)</span></p>
+        </div>
 
-        <label for="pm25">PM2.5:</label><br>
-        <input type="number" id="pm25" name="pm25" step="any" required><br><br>
+        <!-- Weather Details -->
+        <div class="weather-details">
+            <p>Humidity: 70%</p>
+            <p>Wind Speed: 12 km/h</p>
+            <p>Pressure: 1013 hPa</p>
+        </div>
 
-        <label for="pm10">PM10:</label><br>
-        <input type="number" id="pm10" name="pm10" step="any" required><br><br>
+        <div class="btn-container">
+            <a href="/aqi_pred" class="btn btn-dashboard">
+                <i class="fas fa-cloud-sun fa-btn"></i> AQI Prediction
+            </a>
+            
+            <a href="/recommendation" class="btn btn-dashboard">
+                <i class="fas fa-comments fa-btn"></i> Recommendation Chatbot
+            </a>
+        </div>
+    </div>
 
-        <label for="no">NO:</label><br>
-        <input type="number" id="no" name="no" step="any" required><br><br>
-
-        <label for="no2">NO2:</label><br>
-        <input type="number" id="no2" name="no2" step="any" required><br><br>
-
-        <label for="nox">NOx:</label><br>
-        <input type="number" id="nox" name="nox" step="any" required><br><br>
-
-        <label for="co">CO:</label><br>
-        <input type="number" id="co" name="co" step="any" required><br><br>
-
-        <label for="so2">SO2:</label><br>
-        <input type="number" id="so2" name="so2" step="any" required><br><br>
-
-        <label for="o3">O3:</label><br>
-        <input type="number" id="o3" name="o3" step="any" required><br><br>
-
-        <label for="benzene">Benzene:</label><br>
-        <input type="number" id="benzene" name="benzene" step="any" required><br><br>
-
-        <label for="toluene">Toluene:</label><br>
-        <input type="number" id="toluene" name="toluene" step="any" required><br><br>
-
-        <label for="xylene">Xylene:</label><br>
-        <input type="number" id="xylene" name="xylene" step="any" required><br><br>
-
-        <label for="year">Year:</label><br>
-        <input type="number" id="year" name="year" required><br><br>
-
-        <label for="month">Month:</label><br>
-        <input type="number" id="month" name="month" required><br><br>
-
-        <label for="day">Day:</label><br>
-        <input type="number" id="day" name="day" required><br><br>
-
-        <button type="submit">Predict AQI</button>
-    </form>
-
-    <h2>Prediction Result:</h2>
-    <p>{{ predicted_aqi }}</p>
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
